@@ -2585,6 +2585,21 @@ let api = function Binance( options = {} ) {
         },
 
         /**
+        * rounds number with given step to the closest next value
+        * @param {float} qty - quantity to round
+        * @param {string} stepSize - stepSize as specified by exchangeInfo
+        * @return {float} - number
+        */
+        roundStepUp: function ( qty, stepSize ) {
+            // Integers do not require rounding
+            if ( Number.isInteger( qty ) ) return qty;
+            const qtyString = parseFloat( qty ).toFixed( 16 );
+            const desiredDecimals = Math.max( stepSize.indexOf( '1' ) - 1, 0 );
+            const decimalIndex = qtyString.indexOf( '.' );
+            return parseFloat( qtyString.slice( 0, decimalIndex + desiredDecimals + 1 ) ) + parseFloat(stepSize);
+        },
+
+        /**
         * rounds price to required precision
         * @param {float} price - price to round
         * @param {float} tickSize - tickSize as specified by exchangeInfo

@@ -4567,6 +4567,41 @@ let api = function Binance( options = {} ) {
             }, 'POST' );
         },
 
+        mgIsoAccountInfo: function ( symbol, callback ) {
+            let parameters = {
+                symbols: symbol,
+            };
+            signedRequest( sapi + 'v1/margin/isolated/account', parameters, function ( error, data ) {
+                if ( callback ) return callback( error, data );
+            }, 'GET' );
+        },
+
+        mgIsoTransferMainToMargin: function ( symbol, asset, amount, callback ) {
+            let parameters = { 
+                asset,
+                symbol,
+                amount,
+                transFrom: 'SPOT',
+                transTo: 'ISOLATED_MARGIN',
+            };
+            signedRequest( sapi + 'v1/margin/isolated/transfer', parameters, function ( error, data ) {
+                if ( callback ) return callback( error, data );
+            }, 'POST' );
+        },
+
+        mgIsoTransferMarginToMain: function ( symbol, asset, amount, callback ) {
+            let parameters = { 
+                asset,
+                symbol,
+                amount,
+                transFrom: 'ISOLATED_MARGIN',
+                transTo: 'SPOT',
+            };
+            signedRequest( sapi + 'v1/margin/isolated/transfer', parameters, function ( error, data ) {
+                if ( callback ) return callback( error, data );
+            }, 'POST' );
+        },
+
         /**
          * Transfer from margin account to main account
          * @param {string} asset - the asset
@@ -4627,10 +4662,15 @@ let api = function Binance( options = {} ) {
          * Get maximum transfer-out amount of an asset
          * @param {string} asset - the asset
          * @param {function} callback - the callback function
+         * @param {string} isolatedSymbol - isolated symbol
          * @return {undefined}
          */
-        maxTransferable: function ( asset, callback ) {
-            signedRequest( sapi + 'v1/margin/maxTransferable', { asset: asset }, function( error, data ) {
+        maxTransferable: function ( asset, callback, isolatedSymbol = '' ) {
+            const params = { asset };
+            
+            if (isolatedSymbol) params.isolatedSymbol = isolatedSymbol;
+    
+            signedRequest( sapi + 'v1/margin/maxTransferable', params, function( error, data ) {
                 if( callback ) return callback( error, data );
             } );
         },
@@ -4683,7 +4723,7 @@ let api = function Binance( options = {} ) {
          * @return {undefined}
          */
         mgAccount: function( callback ,isIsolated = false) {
-            const endpoint = 'v1/margin' + (isIsolated?'/isolated':'')  + '/account'
+            const endpoint = 'v1/margin' + (isIsolated?'/isolated':'') + '/account'
             signedRequest( sapi + endpoint, {}, function( error, data ) {
                 if( callback ) return callback( error, data );
             } );
@@ -4692,10 +4732,15 @@ let api = function Binance( options = {} ) {
          * Get maximum borrow amount of an asset
          * @param {string} asset - the asset
          * @param {function} callback - the callback function
+         * @param {string} isolatedSymbol -isolated symbol
          * @return {undefined}
          */
-        maxBorrowable: function ( asset, callback ) {
-            signedRequest( sapi + 'v1/margin/maxBorrowable', { asset: asset }, function( error, data ) {
+        maxBorrowable: function ( asset, callback, isolatedSymbol = '') {
+            const params = { asset };
+    
+            if (isolatedSymbol) params.isolatedSymbol = isolatedSymbol;
+            
+            signedRequest( sapi + 'v1/margin/maxBorrowable', params, function( error, data ) {
                 if( callback ) return callback( error, data );
             } );
         },

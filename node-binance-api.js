@@ -4583,9 +4583,11 @@ let api = function Binance( options = {} ) {
         },
 
         mgIsoAccountInfo: function ( symbol, callback ) {
-            let parameters = {
-                symbols: symbol,
-            };
+            let parameters = {};
+
+            if (symbol)
+                parameters.symbols = symbol;
+
             signedRequest( sapi + 'v1/margin/isolated/account', parameters, function ( error, data ) {
                 if ( callback ) return callback( error, data );
             }, 'GET' );

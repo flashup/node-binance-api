@@ -3506,10 +3506,10 @@ let api = function Binance( options = {} ) {
                             resolve( response );
                         }
                     }
-                    signedRequest( wapi + 'v3/tradeFee.html', params, callback );
+                    signedRequest( sapi + 'v1/asset/tradeFee', params, callback );
                 } )
             } else {
-                signedRequest( wapi + 'v3/tradeFee.html', params, callback );
+                signedRequest( sapi + 'v1/asset/tradeFee', params, callback );
             }
         },
 
@@ -4688,6 +4688,17 @@ let api = function Binance( options = {} ) {
             if (isolatedSymbol) params.isolatedSymbol = isolatedSymbol;
     
             signedRequest( sapi + 'v1/margin/maxTransferable', params, function( error, data ) {
+                if( callback ) return callback( error, data );
+            } );
+        },
+
+        mgLiquidationHistory: function (symbol, startTime, callback) {
+            const params = { isolatedSymbol : symbol };
+            
+            if (startTime)
+                params['startTime'] = startTime;
+
+            signedRequest( sapi + 'v1/margin/forceLiquidationRec', params, function( error, data ) {
                 if( callback ) return callback( error, data );
             } );
         },

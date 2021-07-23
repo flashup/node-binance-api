@@ -446,6 +446,10 @@ let api = function Binance( options = {} ) {
         if ( typeof flags.newOrderRespType !== 'undefined' ) opt.newOrderRespType = flags.newOrderRespType;
         if ( typeof flags.newClientOrderId !== 'undefined' ) opt.newClientOrderId = flags.newClientOrderId;
         if ( typeof flags.sideEffectType !== 'undefined' ) opt.sideEffectType = flags.sideEffectType;
+        if ( typeof flags.quoteOrderQty !== 'undefined' ) {
+            opt.quoteOrderQty = flags.quoteOrderQty;
+            delete opt.quantity;
+        }
 
         /*
          * STOP_LOSS
@@ -2592,11 +2596,11 @@ let api = function Binance( options = {} ) {
         */
         roundStepUp: function ( qty, stepSize ) {
             // Integers do not require rounding
-            if ( Number.isInteger( qty ) ) return qty;
-            const qtyString = parseFloat( qty ).toFixed( 16 );
+            if ( Number.isInteger( qty) ) return qty;
+            const qtyString = (parseFloat( qty) + parseFloat(stepSize)).toFixed( 16 );
             const desiredDecimals = Math.max( stepSize.indexOf( '1' ) - 1, 0 );
             const decimalIndex = qtyString.indexOf( '.' );
-            return parseFloat( qtyString.slice( 0, decimalIndex + desiredDecimals + 1 ) ) + parseFloat(stepSize);
+            return parseFloat( qtyString.slice( 0, decimalIndex + desiredDecimals + 1 ) );
         },
 
         /**

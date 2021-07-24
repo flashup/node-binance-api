@@ -4587,7 +4587,7 @@ let api = function Binance( options = {} ) {
         },
 
         mgIsoAccountInfo: function ( symbol, callback ) {
-            let parameters = {};
+            let parameters = Object.assign({});
 
             if (symbol)
                 parameters.symbols = symbol;
@@ -4598,26 +4598,26 @@ let api = function Binance( options = {} ) {
         },
 
         mgIsoTransferMainToMargin: function ( symbol, asset, amount, callback ) {
-            let parameters = { 
+            let parameters = Object.assign({ 
                 asset,
                 symbol,
                 amount,
                 transFrom: 'SPOT',
                 transTo: 'ISOLATED_MARGIN',
-            };
+            });
             signedRequest( sapi + 'v1/margin/isolated/transfer', parameters, function ( error, data ) {
                 if ( callback ) return callback( error, data );
             }, 'POST' );
         },
 
         mgIsoTransferMarginToMain: function ( symbol, asset, amount, callback ) {
-            let parameters = { 
+            let parameters = Object.assign({ 
                 asset,
                 symbol,
                 amount,
                 transFrom: 'ISOLATED_MARGIN',
                 transTo: 'SPOT',
-            };
+            });
             signedRequest( sapi + 'v1/margin/isolated/transfer', parameters, function ( error, data ) {
                 if ( callback ) return callback( error, data );
             }, 'POST' );
@@ -4697,7 +4697,7 @@ let api = function Binance( options = {} ) {
         },
 
         mgLiquidationHistory: function (symbol, startTime, callback) {
-            const params = { isolatedSymbol : symbol };
+            const params = Object.assign({ isolatedSymbol : symbol });
             
             if (startTime)
                 params['startTime'] = startTime;
@@ -4768,7 +4768,7 @@ let api = function Binance( options = {} ) {
          * @return {undefined}
          */
         maxBorrowable: function ( asset, callback, isolatedSymbol = '') {
-            const params = { asset };
+            const params = Object.assign({ asset });
     
             if (isolatedSymbol) params.isolatedSymbol = isolatedSymbol;
             

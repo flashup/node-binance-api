@@ -427,12 +427,12 @@ let api = function Binance( options = {} ) {
     const marginOrder = ( side, symbol, quantity, price, flags = {}, callback = false ) => {
         let endpoint = 'v1/margin/order';
         if ( Binance.options.test ) endpoint += '/test';
-        let opt = {
+        let opt = Object.assign({
             symbol: symbol,
             side: side,
             type: 'LIMIT',
             quantity: quantity
-        };
+        });
         if ( typeof flags.type !== 'undefined' ) opt.type = flags.type;
         if (typeof flags.isIsolated !== 'undefined') opt.isIsolated = flags.isIsolated;
         if ( opt.type.includes( 'LIMIT' ) ) {

@@ -2271,7 +2271,7 @@ let api = function Binance( options = {} ) {
      * @return {array} - symbols with their current prices
      */
     const priceData = ( data ) => {
-        const prices = {};
+        const prices = Object.create({});
         if ( Array.isArray( data ) ) {
             for ( let obj of data ) {
                 prices[obj.symbol] = obj.price;
@@ -2288,7 +2288,7 @@ let api = function Binance( options = {} ) {
      * @return {object} - symbols with their bids and asks data
      */
     const bookPriceData = data => {
-        let prices = {};
+        let prices = Object.create({});
         for ( let obj of data ) {
             prices[obj.symbol] = {
                 bid: obj.bidPrice,

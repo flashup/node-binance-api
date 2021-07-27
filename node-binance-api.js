@@ -427,7 +427,7 @@ let api = function Binance( options = {} ) {
     const marginOrder = ( side, symbol, quantity, price, flags = {}, callback = false ) => {
         let endpoint = 'v1/margin/order';
         if ( Binance.options.test ) endpoint += '/test';
-        let opt = Object.assign({
+        let opt = Object.create({
             symbol: symbol,
             side: side,
             type: 'LIMIT',
@@ -4587,7 +4587,7 @@ let api = function Binance( options = {} ) {
         },
 
         mgIsoAccountInfo: function ( symbol, callback ) {
-            let parameters = Object.assign({});
+            let parameters = Object.create({});
 
             if (symbol)
                 parameters.symbols = symbol;

@@ -427,7 +427,7 @@ let api = function Binance( options = {} ) {
     const marginOrder = ( side, symbol, quantity, price, flags = {}, callback = false ) => {
         let endpoint = 'v1/margin/order';
         if ( Binance.options.test ) endpoint += '/test';
-        let opt = Object.create({
+        let opt = Object.assign({
             symbol: symbol,
             side: side,
             type: 'LIMIT',
@@ -2271,7 +2271,7 @@ let api = function Binance( options = {} ) {
      * @return {array} - symbols with their current prices
      */
     const priceData = ( data ) => {
-        const prices = Object.create({});
+        const prices = Object.assign({});
         if ( Array.isArray( data ) ) {
             for ( let obj of data ) {
                 prices[obj.symbol] = obj.price;
@@ -2288,7 +2288,7 @@ let api = function Binance( options = {} ) {
      * @return {object} - symbols with their bids and asks data
      */
     const bookPriceData = data => {
-        let prices = Object.create({});
+        let prices = Object.assign({});
         for ( let obj of data ) {
             prices[obj.symbol] = {
                 bid: obj.bidPrice,
@@ -4587,7 +4587,7 @@ let api = function Binance( options = {} ) {
         },
 
         mgIsoAccountInfo: function ( symbol, callback ) {
-            let parameters = Object.create({});
+            let parameters = Object.assign({});
 
             if (symbol)
                 parameters.symbols = symbol;

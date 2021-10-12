@@ -4655,6 +4655,12 @@ let api = function Binance( options = {} ) {
             }, 'GET' );
         },
 
+        mgCrossAccountInfo: function ( callback ) {
+            signedRequest( sapi + 'v1/margin/account', {}, function ( error, data ) {
+                if ( callback ) return callback( error, data );
+            }, 'GET' );
+        },
+
         mgIsoTransferMainToMargin: function ( symbol, asset, amount, callback ) {
             let parameters = Object.assign({ 
                 asset,

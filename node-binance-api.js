@@ -3044,7 +3044,7 @@ let api = function Binance( options = {} ) {
         orderStatus: function ( symbol, orderid, callback, flags = {} ) {
             let parameters = Object.assign( { symbol: symbol }, flags );
             if (orderid){
-                Object.assign( { orderId: orderid }, parameters )
+                Object.assign( parameters, { orderId: orderid } )
             }
 
             if ( !callback ) {
@@ -4642,6 +4642,31 @@ let api = function Binance( options = {} ) {
             signedRequest( sapi + 'v1/margin/transfer', parameters, function ( error, data ) {
                 if ( callback ) return callback( error, data );
             }, 'POST' );
+        },
+
+        // cross
+        mgAssetInfo: function ( asset, callback ) {
+            signedRequest( sapi + 'v1/margin/asset', { asset }, function ( error, data ) {
+                if ( callback ) return callback( error, data );
+            }, 'GET' );
+        },
+
+        mgCrossPairInfo: function ( symbol, callback ) {
+            signedRequest( sapi + 'v1/margin/pair', { symbol }, function ( error, data ) {
+                if ( callback ) return callback( error, data );
+            }, 'GET' );
+        },
+
+        isoAccLimit: function ( callback ) {
+            signedRequest( sapi + 'v1/margin/isolated/accountLimit', { }, function ( error, data ) {
+                if ( callback ) return callback( error, data );
+            }, 'GET' );
+        },
+
+        isoEnableSymbol: function ( symbol, callback ) {
+            signedRequest( sapi + 'v1/margin/isolated/account', { symbol }, function ( error, data ) {
+                if ( callback ) return callback( error, data );
+            }, 'GET' );
         },
 
         mgIsoAccountInfo: function ( symbol, callback ) {

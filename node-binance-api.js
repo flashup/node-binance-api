@@ -429,7 +429,8 @@ let api = function Binance( options = {} ) {
      * @return {undefined}
      */
     const marginOrder = ( side, symbol, quantity, price, flags = {}, callback = false ) => {
-        let endpoint = 'v1/margin/order';
+        let endpoint = `v1/margin/order${flags.type === 'OCO' ? '/oco' : ''}`;
+
         if ( Binance.options.test ) endpoint += '/test';
         let opt = {
             symbol: symbol,
@@ -444,6 +445,16 @@ let api = function Binance( options = {} ) {
             if ( opt.type !== 'LIMIT_MAKER' ) {
                 opt.timeInForce = 'GTC';
             }
+        }
+
+        if ( opt.type === 'OCO' ) {
+            opt.price = price;
+            opt.stopLimitPrice = flags.stopLimitPrice;
+            opt.stopLimitTimeInForce = 'GTC';
+            delete opt.type;
+            if ( typeof flags.listClientOrderId !== 'undefined' ) opt.listClientOrderId = flags.listClientOrderId;
+            if ( typeof flags.limitClientOrderId !== 'undefined' ) opt.limitClientOrderId = flags.limitClientOrderId;
+            if ( typeof flags.stopClientOrderId !== 'undefined' ) opt.stopClientOrderId = flags.stopClientOrderId;
         }
 
         if ( typeof flags.timeInForce !== 'undefined' ) opt.timeInForce = flags.timeInForce;
@@ -4543,10 +4554,11 @@ let api = function Binance( options = {} ) {
          * @param {string} symbol - the symbol to cancel
          * @param {string} orderid - the orderid to cancel
          * @param {function} callback - the callback function
+         * @param {string} isIsolated - flag margin type
          * @return {undefined}
          */
-        mgCancel: function ( symbol, orderid, callback = false,isIsolated='FALSE') {
-            signedRequest( sapi + 'v1/margin/order', { symbol: symbol, orderId: orderid,isIsolated }, function ( error, data ) {
+        mgCancel: function ( symbol, orderid, callback = false, isIsolated='FALSE') {
+            signedRequest( sapi + 'v1/margin/order', { symbol: symbol, orderId: orderid, isIsolated }, function ( error, data ) {
                 if ( callback ) return callback.call( this, error, data, symbol );
             }, 'DELETE' );
         },

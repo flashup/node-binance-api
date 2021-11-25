@@ -2077,7 +2077,7 @@ let api = function Binance( options = {} ) {
             if ( Binance.options.execution_callback ) Binance.options.execution_callback( data );
         } else if ( type === 'listStatus' ) {
             if ( Binance.options.list_status_callback ) Binance.options.list_status_callback( data );
-        } else if ( type === 'outboundAccountPosition' ) {
+        } else if ( type === 'outboundAccountPosition' || type === 'balanceUpdate' ) {
             Binance.options.balance_callback( data );
         } else {
             Binance.options.log( 'Unexpected userData: ' + type );
@@ -5505,7 +5505,7 @@ let api = function Binance( options = {} ) {
                         }
                     }, 60 * 30 * 1000 ); // 30 minute keepalive
                     Binance.options.margin_balance_callback = callback;
-                    Binance.options.margin_execution_callback = execution_callback;
+                    Binance.options.margin_execution_callback = execution_callback ? callback : execution_callback;//This change is required to listen for Orders
                     Binance.options.margin_list_status_callback = list_status_callback;
                     const subscription = subscribe( Binance.options.listenMarginKey, userMarginDataHandler, reconnect );
                     if ( subscribed_callback ) subscribed_callback( subscription.endpoint );

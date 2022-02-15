@@ -1253,6 +1253,12 @@ declare module "node-binance-api" {
         mgTransferMainToMargin(asset: string, amount: number, callback?: _callback): any;
         mgTransferMainToMargin(...args: any): any;
 
+        mgIsoAccountInfo(symbol?: string, callback?: _callback): any;
+        mgLiquidationHistory(symbol: string, startTime: number, callback?: _callback): any;
+
+        mgIsoTransferMarginToMain(symbol: string, asset: string, amount: number, callback?: _callback): any;
+        mgIsoTransferMainToMargin(symbol: string, asset: string, amount: number, callback?: _callback): any;
+
         /**
          * Transfer from main account to margin account
          * @param {string} asset - the asset
